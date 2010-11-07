@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="180">
+
+
+<text x="5" y="20" font-family="serif" font-size="20">AaBb0123</text><text x="120" y="20" font-family="serif" font-size="20">Serif</text>
+<text x="5" y="40" font-family="garamond" font-size="20">AaBb0123</text><text x="120" y="40" font-family="garamond" font-size="20">Garamond</text>
+<text x="5" y="60" font-family="arial" font-size="20">AaBb0123</text><text x="120" y="60" font-family="arial" font-size="20">Arial</text>
+<text x="5" y="80" font-family="monospace" font-size="20">AaBb0123</text><text x="120" y="80" font-family="monospace" font-size="20">Monospace</text>
+<text x="5" y="100" font-family="cursive" font-size="20">AaBb0123</text><text x="120" y="100" font-family="cursive" font-size="20">Cursive</text>
+<text x="5" y="120" font-family="courier" font-size="20">AaBb0123</text><text x="120" y="120" font-family="courier" font-size="20">Courier</text>
+<text x="5" y="140" font-family="impact" font-size="20">AaBb0123</text><text x="120" y="140" font-family="impact" font-size="20">Impact</text>
+<text x="5" y="160" font-family="fantasy" font-size="20">AaBb0123</text><text x="120" y="160" font-family="fantasy" font-size="20">Fantasy</text>
+
+</svg>

@@ -1,0 +1,103 @@
+<html>
+
+
+
+<head>
+
+
+<style type="text/css">
+table {
+	border-width: 1px;
+	border-spacing: 0px;
+	border-style: none;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+}
+table th {
+	border-width: 1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+table td {
+	border-width: 1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+.pb {
+	color: red;
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+<p>SVG Oct 2010 - <strong>Week 2 Assignment</strong></p>
+
+<p><strong>Student:</strong> pjacquot - Patrice Jacquot</p>
+
+
+
+
+<h1>Part 1</h1>
+
+
+<p>I started the shape on the top-left corner, then drawn it clockwise, making use of bezier curves with 'Q' for rounded elements.
+In order to get equivalent colors, I had to make a gradient with tree components: green (#F50300), then orange, then red (#088000).</p>
+
+
+<embed type="image/svg+xml" src="W.svg" width="309" height="216"/>
+
+
+
+<h1>Part 2</h1>
+
+
+
+<p>I copy/pasted letter path from Part 1 into a defs sections. I set the fill attribute of the path an "inherit" in order to customize this value for each of the two instances.
+Then I draw a simple rectangle container. I linked two instances of the same defined letter path. Each of the two letter are customized through <strong>rotation</strong>, <strong>translation</strong> and <strong>scale</strong> transformations.</p>
+
+<p>For the <strong>rotation</strong>:</p>
+<ul>
+  <li>the instance for the letter at the left is rotated 15 degrees clockwise, having the rotation axis on the top left corner;</li>
+  <li>the instance for the letter at the left is rotated 15 degrees counter clockwise, having the rotation axis on the top right corner.</li>
+</ul>
+
+
+<p>For the <strong>translation</strong>, I first translated the first letter to make its top-left corner coincide with the top-left corner of the rectange.
+At this point, I found that a <strong>scale</strong> factor of 0.9 is appropriate to make the letter bound into the rectangle. Then, I translated the second letter to make it fit.</p>
+
+<p>Finally, I've defnied a viewbox and a reduced width in order to scale down the whole SVG image, to match the width of 299px defined for the PNG picture of the assignement.</p>
+
+<embed type="image/svg+xml" src="WW.svg" width="299"/>
+
+
+
+<h1>Part 3</h1>
+
+
+
+<p>I added a background gradient in 5 steps: red at offset 0, yellow at offset 0.25, green at offset 0.5, and one more time yellow at offset 0.75 and red at offset 1.</p>
+<p>I had the feeling that the "flat ellipse" cannot be drawn with an ellipse, so I choosed to use a path with quadratic beziers ('Q'). The two elipses are defined in the same path, in order to benefit the "evenodd" fill rule to make the center emty and transparent.
+The gradient is radial. I made it start from green at 0.4 offset, as the center of the ellipse is invisible, and defined orange at 0.8 offset and finally red at 1 offset.</p>
+
+<embed type="image/svg+xml" src="WoW.svg" width="479" height="216"/>
+
+
+
+</body>
+
+
+
+</html>

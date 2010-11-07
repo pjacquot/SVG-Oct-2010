@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="350">
+
+
+
+<ellipse cx="338" cy="170" rx="55" ry="140" stroke-width="9" stroke="black" fill="#EEEE44"/>
+
+<rect x="65" y="90" width="550" height="35" stroke-width="3" stroke="black" fill="#88FFFF"/>
+<rect x="65" y="230" width="550" height="35" stroke-width="3" stroke="black" fill="#88FFFF"/>
+
+<ellipse cx="200" cy="170" rx="55" ry="140" stroke-width="9" stroke="black" fill="#EEEE44"/>
+
+<ellipse cx="476" cy="170" rx="55" ry="140" stroke-width="9" stroke="black" fill="#EEEE44"/>
+
+<rect x="65" y="160" width="216" height="35" stroke-width="3" stroke="black" fill="#88FFFF"/>
+<rect x="395" y="160" width="220" height="35" stroke-width="3" stroke="black" fill="#88FFFF"/>
+
+</svg>

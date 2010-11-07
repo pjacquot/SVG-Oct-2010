@@ -1,0 +1,108 @@
+<html>
+
+
+
+<head>
+
+
+<style type="text/css">
+table {
+	border-width: 1px;
+	border-spacing: 0px;
+	border-style: none;
+	border-color: gray;
+	border-collapse: collapse;
+	background-color: white;
+}
+table th {
+	border-width: 1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+table td {
+	border-width: 1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: gray;
+	background-color: white;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+.pb {
+	color: red;
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+<p>SVG Oct 2010 - <strong>Week 1 Assignment</strong></p>
+
+<p><strong>Student:</strong> pjacquot - Patrice Jacquot</p>
+
+
+
+
+<h1>Part 1</h1>
+
+
+<p>I had to add width and height declarations to the embed tag, to avoid scrollbars in Opera, Safari and Chrome. Only Firefox sized automatically in the page the embedded SVG to its contents size.</p>
+
+
+<embed type="image/svg+xml" src="simpleRedLine.svg" width="90" height="90"/>
+
+
+
+<h1>Part 2</h1>
+
+
+
+<p>Among all linecaps tested, only the fourth "round" have a visible effect on the line (on Firefox 3.6, Opera 10.6, Safari 5.0, Chrome 7.0), by making rounded edges.</p>
+
+<embed type="image/svg+xml" src="strokes.svg" width="500" height="300"/>
+
+
+
+<h1>Part 3</h1>
+
+
+
+<p>I measured the dimensions and the colors in the picture provided. Then, I created the 3 ellipses and 3 rectangles. I ordered the elements to get the interveaving, except for the middle rectangle which I brokened to two rectangles at left and right of the central ellipse. I adjusted manually their widths.</p>
+
+<embed type="image/svg+xml" src="interweaving.svg" width="680" height="350"/>
+
+
+
+<h1>Part 4</h1>
+<embed type="image/svg+xml" src="fontFamilies.svg" width="680" height="180"/>
+
+
+<p>All tests were done under Windows. Most font  issues detected are with Opera, which seems to choose the wrong front or misinterpret the declaration, and sometimes to truncate fonts.
+Fantasy font family is interpreted corretly only under Safari. Maybe I could have made a wrong declaration while Safari is more be tolerant about this possible mistake.
+I all cases, the result differs in each browser, dispite they run under the same operating system with the same available fonts.</p>
+
+<table>
+<tr><th>Font</th><th>Firefox 3.6</th><th>Opera 10.6</th><th>Safari 5.0</th><th>Chrome 7.0</th></tr>
+<tr><td>Serif</td><td>OK</td><td class="pb">Last letter "f" truncated</td><td>OK</td><td>OK</td></tr>
+<tr><td>Garamond</td><td>OK</td><td>OK</td><td>OK</td><td>OK</td></tr>
+<tr><td>Arial</td><td>OK</td><td>OK</td><td>OK</td><td>OK</td></tr>
+<tr><td>Monospace</td><td>OK</td><td class="pb">Too much weight</td><td>OK</td><td>OK</td></tr>
+<tr><td>Cursive</td><td>OK</td><td>OK</td><td>OK</td><td>OK</td></tr>
+<tr><td>Courier</td><td>OK</td><td class="pb">Too much weight, not Courier</td><td>OK</td><td>OK</td></tr>
+<tr><td>Impact</td><td>OK</td><td class="pb">First letter "A" truncated</td><td>OK</td><td>OK</td></tr>
+<tr><td>Fantasy</td><td class="pb">Looks like Arial</td><td class="pb">Looks like Arial</td><td>OK</td><td class="pb">Looks like Impact</td></tr>
+</table>
+
+
+</body>
+
+
+
+</html>
