@@ -1,0 +1,283 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	viewBox="0 0 640 480" width="100%" height="100%" zoomAndPan="magnify">
+
+
+<title>Happy Planet Index</title>
+<desc>Happy Planet Index by Patrice Jacquot - Final submission for W3C SVG training</desc>
+
+<!-- The following library is in public domain, provides adds the JSON parser object for legacy browsers -->
+<script type="application/ecmascript" src="json2.js"></script>
+
+<!-- Main script -->
+<script type="application/ecmascript"> <![CDATA[
+
+/**
+ * Configuration constants
+ */
+
+// Size of the smallest country bubble
+var smallestBubble = 1;
+
+// Size of the biggest country bubble
+var biggestBubble = 100;
+
+// Maximum GDP on the horizontal axis
+var highestGdp = 50000;
+
+// Width of the graph viewport
+var graphWidth = 590;
+
+// Height of the graph viewport
+var graphHeight = 430;
+
+/**
+ * Variables
+ */
+
+// The handle of the interval
+var clock;
+
+// Year currently displayed
+var year;
+
+// Array of the country bubble nodes
+var countryNodes;
+
+// Names of the countries array, loaded via JSON
+var countryNames;
+
+// GDP per capita array, loaded via JSON
+var gdpPerCapita;
+
+// Population array, loaded via JSON
+var population;
+
+/**
+ * Loads the JSON depicted by url and calls asynchronously the callback
+ * function upon reception with parsed object as a parameter
+ */
+function loadJson(url, callback) {
+  var http_request = new XMLHttpRequest();
+  http_request.open( "GET", url, true );
+  http_request.onreadystatechange = function () {
+    if (http_request.readyState == 4 && (http_request.status == 0 || http_request.status == 200)) {
+       callback(JSON.parse( http_request.responseText ));
+    }
+  };
+  http_request.send(null);
+}
+
+/**
+ * Highlights a button of the main menu on mouse over
+ */
+function hilightMenu(evt) {
+  evt.currentTarget.childNodes.item(1).setAttribute("stroke", evt.type == "mouseover" ? "red" : "none");
+}
+
+/**
+ * Highlights a country bubble on mouse over
+ */
+function hilightCountry(evt) {
+  evt.currentTarget.setAttribute("opacity", evt.type == "mouseover" ? "0.8" : "0.5");
+  if (evt.type == "mouseover") {
+    evt.currentTarget.nextSibling.nextSibling.removeAttribute("visibility");
+  } else {
+    evt.currentTarget.nextSibling.nextSibling.setAttribute("visibility", "hidden");
+  }
+}
+
+/**
+ * Starts an animation
+ */
+function start(title, url, maximum) {
+  // hide buttons
+  document.getElementById("buttons").setAttributeNS(null, "visibility", "hidden");
+  document.getElementById('yAxisText').firstChild.nodeValue = title;
+
+  // update vertical numbers
+  document.getElementById('v25').firstChild.nodeValue = maximum / 4;
+  document.getElementById('v50').firstChild.nodeValue = maximum / 2;
+  document.getElementById('v75').firstChild.nodeValue = maximum * 3 / 4;
+  document.getElementById('v100').firstChild.nodeValue = maximum;
+
+  // load data for this graph
+  loadJson(url, function(val) {
+    var xfactor = graphWidth / highestGdp;
+    var yfactor = graphHeight / maximum;
+
+    // initialize 
+    for (var i = 0; i < countryNodes.length; i++) {
+      var path = "";
+      for (var j = 0; j < val.length; j++) {
+        path += (j == 0 ? 'M' : 'L') + ' ' + Math.ceil(gdpPerCapita[j][i] * xfactor) + ',' + Math.ceil(val[j][i] * yfactor) + ' ';
+      }
+      countryNodes[i].children[2].setAttributeNS(null, "path", path);
+    }
+
+    // trigger animations
+    for (i = 0; i < countryNodes.length; i++) {
+      countryNodes[i].children[2].beginElement();
+      countryNodes[i].children[0].children[0].beginElement();
+    }
+
+    // trigger year counter
+    year = 1961;
+    updateYear();
+    clock = setInterval(updateYear, 500);
+  });
+}
+
+/**
+ * Update year text in background
+ */
+function updateYear() {
+  if (year <= 2005) {
+    document.getElementById('yearText').firstChild.nodeValue = '' + year;
+  } else {
+    clearInterval(clock);
+    document.getElementById('yearText').firstChild.nodeValue = '';
+    document.getElementById("buttons").removeAttributeNS(null, "visibility");
+  }
+  year++;
+}
+
+/**
+ * Add each country bubble in the DOM
+ */
+function buildCountryBubbles(nb) {
+  var graph = document.getElementById("graph");
+  var countryTemplate = document.getElementById("country");
+
+  countryNodes = new Array(nb);
+
+  for (var i = 0; i < nb; i++) {
+    var newCountry = countryTemplate.cloneNode("true");
+    newCountry.setAttributeNS(null, "id", "country" + i);
+    graph.appendChild(newCountry);
+    countryNodes[i] = newCountry;
+  }
+}
+
+/**
+ * Load the country names and initialize tooltips
+ */
+loadJson('countries.json', function(value) {
+  countryNames = value;
+  if (!countryNodes) buildCountryBubbles(countryNames.length);
+  for (var i = 0; i < countryNames.length; i++) {
+    countryNodes[i].children[1].children[2].firstChild.nodeValue = countryNames[i];
+  }
+});
+
+/**
+ * Load GBP per capita
+ */
+loadJson('gdpPerCapita.json', function(value) {
+  gdpPerCapita = value;
+});
+
+/**
+ * Load population
+ */
+loadJson('population.json', function(value) {
+  population = value;
+
+  if (!countryNodes) buildCountryBubbles(population.length);
+
+  // Look for maximum and minimum population
+  var minPopulation = Number.MAX_VALUE;
+  var maxPopulation = 0;
+  for (var i = 0; i < population.length; i++) {
+    for (var j = 0; j < population[i].length; j++) {
+      var val = population[i][j];
+      if (val > maxPopulation) maxPopulation = val;
+      if (val < minPopulation) minPopulation = val;
+    }
+  }
+
+  var populationAmplitude = maxPopulation - minPopulation;
+  var bubbleAmplitude = biggestBubble - smallestBubble;
+  var factor = bubbleAmplitude / populationAmplitude;
+
+  for (var i = 0; i < countryNodes.length; i++) {
+    var values = "";
+    for (var j = 0; j < population.length; j++) {
+      values += Math.ceil(population[j][i] * factor);
+      if (j != population.length - 1) values += ";";
+    }
+    countryNodes[i].children[0].children[0].setAttributeNS(null, "values", values);
+  }
+});
+
+]]> </script>
+
+<defs>
+  <!-- Buttons gradient -->
+  <linearGradient id="button" gradientTransform="rotate(90,.5,.5)">
+    <stop stop-color="#DDD" offset="0"/>
+    <stop stop-color="green" offset="1"/>
+  </linearGradient>
+
+  <!-- Template of a single country bubble -->
+  <g id="country">
+    <circle cx="0" cy="0" r="0" fill="green" opacity="0.6" onmouseover="hilightCountry(evt)" onmouseout="hilightCountry(evt)">
+      <animate attributeType="XML" attributeName="r" begin="indefinite" dur="22s" values="0"/>
+    </circle>
+    <g visibility="hidden">
+      <path stroke="green" fill="none" d="M 0,0 L 20,20 L 50,20"/>
+      <rect x="50" y="10" fill="#DFD" stroke="green" width="150" height="20"/>
+      <text x="127" y="-15" transform="scale(1, -1)" fill="green" font-family="monospace" text-anchor="middle"> </text>
+    </g>
+    <animateMotion begin="indefinite" dur="22s" path="M 0,0"/>
+  </g>
+</defs>
+
+<!-- Frames and texts -->
+<rect id="frame" x="0" y="0" width="640" height="480" fill="#AFA"/>
+<rect id="frame" x="50" y="0" width="590" height="430" stroke="grey" stroke-width="2" fill="white"/>
+<text id="yearText" x="60" y="310" font-family="garamond" font-size="280" fill="#DDD"> </text>
+<text id="yAxisText" x="-5" y="12" font-family="monospace" font-size="15" stroke="green" transform="rotate(270,0,0)" text-anchor="end">Happy Planet Index</text>
+<text id="xAxisText" x="640" y="470" font-family="monospace" font-size="15" stroke="green" text-anchor="end">Income per person (GDP/capita, PPP$ inflation-adjusted)</text>
+
+<!-- Horizontal marks and values -->
+<line x1="50" y1="431" x2="50" y2="438" stroke="grey" stroke-width="2"/><text x="50" y="450" text-anchor="middle" fill="grey">0</text>
+<line x1="195" y1="431" x2="195" y2="438" stroke="grey" stroke-width="2"/><text x="195" y="450" text-anchor="middle" fill="grey">$12,500</text>
+<line x1="340" y1="431" x2="340" y2="438" stroke="grey" stroke-width="2"/><text x="340" y="450" text-anchor="middle" fill="grey">$25,000</text>
+<line x1="490" y1="431" x2="490" y2="438" stroke="grey" stroke-width="2"/><text x="490" y="450" text-anchor="middle" fill="grey">$37,500</text>
+<line x1="640" y1="431" x2="640" y2="438" stroke="grey" stroke-width="2"/><text x="640" y="450" text-anchor="end" fill="grey">$50,000</text>
+
+<!-- Vertical marks and values -->
+<line x1="42" y1="430" x2="50" y2="430" stroke="grey" stroke-width="2"/><text x="40" y="435" text-anchor="end" fill="grey">0</text>
+<line x1="42" y1="323" x2="50" y2="323" stroke="grey" stroke-width="2"/><text id="v25" x="40" y="328" text-anchor="end" fill="grey">2.5</text>
+<line x1="42" y1="215" x2="50" y2="215" stroke="grey" stroke-width="2"/><text id="v50" x="40" y="220" text-anchor="end" fill="grey">5</text>
+<line x1="42" y1="108" x2="50" y2="108" stroke="grey" stroke-width="2"/><text id="v75" x="40" y="113" text-anchor="end" fill="grey">7.5</text>
+<line x1="42" y1="0" x2="50" y2="0" stroke="grey" stroke-width="2"/><text id="v100" x="40" y="12" text-anchor="end" fill="grey">10</text>
+
+<!-- Initial buttons -->
+<g id="buttons">
+  <g id="H" onmouseover="hilightMenu(evt)" onmouseout="hilightMenu(evt)" onclick="start('Happy Planet Index', 'happyPlanetIndex.json', 100)">
+    <rect x="140" y="70" height="55" width="400" fill="url(#button)" stroke-width="3"/>
+    <text x="340" y="110" font-size="32" width="115" fill="white" font-family="monospace" text-anchor="middle">Happy Planet Index</text>
+  </g>
+  <g id="H" onmouseover="hilightMenu(evt)" onmouseout="hilightMenu(evt)" onclick="start('Life Expectancy', 'lifeExpectancy.json', 100)">
+    <rect x="140" y="150" height="55" width="400" fill="url(#button)" stroke-width="3"/>
+    <text x="340" y="190" font-size="32" width="115" fill="white" font-family="monospace" text-anchor="middle">Life Expectancy</text>
+  </g>
+  <g id="H" onmouseover="hilightMenu(evt)" onmouseout="hilightMenu(evt)" onclick="start('Life Satisfaction', 'lifeSatisfaction.json', 10)">
+    <rect x="140" y="230" height="55" width="400" fill="url(#button)" stroke-width="3"/>
+    <text x="340" y="270" font-size="33" width="115" fill="white" font-family="monospace" text-anchor="middle">Life Satisfaction</text>
+  </g>
+  <g id="H" onmouseover="hilightMenu(evt)" onmouseout="hilightMenu(evt)" onclick="start('Ecological Footprint','ecologicalFootprint.json', 10)">
+    <rect x="140" y="310" height="55" width="400" fill="url(#button)" stroke-width="3"/>
+    <text x="340" y="350" font-size="32" width="115" fill="white" font-family="monospace" text-anchor="middle">Ecological Footprint</text>
+  </g>
+</g>
+
+<!-- Animated graphic viewport (we clip bubbles inside), negative scale reverts our y axis from top-down to down-bottom -->
+<clipPath id="graphClip">
+  <rect x="0" y="1" width="590" height="430"/>
+</clipPath>
+<g id="graph" transform="scale(1, -1) translate(50, -432)" clip-path="url(#graphClip)">
+</g>
+
+</svg>

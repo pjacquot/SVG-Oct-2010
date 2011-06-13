@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="250">
+
+
+<script>
+
+/*
+ * Changes frame background color to blue and restarts the animation
+ */
+function rotationEnd() {
+  document.getElementById("frame").setAttributeNS(null, "fill", "blue");
+  document.getElementById("rotation").beginElement();
+}
+
+</script>
+
+<!-- One single needle -->
+<defs>
+  <path id="needle" fill="inherit" d="M 25 125 L 118,118 L 125,125 L 118,132 z"/>
+</defs>
+
+<!-- The frame -->
+<rect id="frame" x="6" y="6" width="238" height="238" stroke="black" stroke-width="8" fill="grey"/>
+
+<!-- The pins -->
+<ellipse cx="125" cy="125" rx="100" ry="100" stroke-width="16" stroke="black" fill="none" stroke-dasharray="1 14"/>
+
+<!-- Four needles -->
+<g id="needles">
+  <use xlink:href="#needle" fill="black"/>
+  <use xlink:href="#needle" transform="rotate(90,125,125)" fill="yellow"/>
+  <use xlink:href="#needle" transform="rotate(180,125,125)" fill="red"/>
+  <use xlink:href="#needle" transform="rotate(270,125,125)" fill="green"/>
+  <animateTransform id="rotation" attributeName="transform" type="rotate" dur="3s" values="0,125,125;360,125,125" repeatCount="1" onend="rotationEnd()"/>
+</g>
+
+</svg>

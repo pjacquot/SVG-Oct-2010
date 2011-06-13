@@ -22,9 +22,12 @@
 <h1>Part 1</h1>
 
 
+<p>This is an animated swimming-pool chronometer. After finishing the rotation animation of 360° in  3 seconds, a Javascript method changes the background and restarts the animation.</p>
 
 
-<embed type="image/svg+xml" src="W.svg" width="309" height="216"/>
+
+
+<embed type="image/svg+xml" src="chronometer.svg" width="250" height="250"/>
 
 
 
@@ -32,13 +35,90 @@
 
 
 
-TODO
+<p>This part lists 3 examples of the usage of SVG on the web. You are welcome to share these links.</p>
 
-<h1>Part 3B</h1>
+<h2>Election results in North Rhine-Westphalia (Germany)</h2>
+
+<a href="http://vis.uell.net/nrw/10/atlas.html">http://vis.uell.net/nrw/10/atlas.html</a>
+
+<p>This is an interactive SVG map of the North Rhine-Westphalia land in Germany showing the results of the last elections.
+Unfortunately, the Javascript is minified, but it is still an inspiring example of geographical data visualisation.</p>
+
+<h2>Games: Tetris & Invaders</h2>
+
+<ul>
+  <li><a href="http://www.croczilla.com/bits_and_pieces/svg/samples/svgtetris/svgtetris.svg">http://www.croczilla.com/bits_and_pieces/svg/samples/svgtetris/svgtetris.svg</a> (written in 2004)</li>
+  <li><a href="http://www.croczilla.com/bits_and_pieces/svg/samples/invaders/invaders.svg">http://www.croczilla.com/bits_and_pieces/svg/samples/invaders/invaders.svg</a> (written in 2007)</li>
+</ul>
+
+<p>These two games are part of the Croczilla SVG sample. They work not only on Firefox but on current versions of Safari, Chrome and Opera. But Invaders is very slow with Safari (version 5.0.2 on Windows Vista) and Safari crashes sometimes !</p>
+
+<h2>Scripted SVG samples using YUI framework</h2>
+
+<p>I strikethrough this item because it is already mentionned in the forum.<p>
+
+<del><a href="http://svg-wow.org">http://svg-wow.org</a></del>
+
+<p><del>Beautiful examples of scripted SVG with sound, using YUI.</del></p>
+
+<h2>Picture rollover effect</h2>
+
+<a href="http://www.carto.net/papers/svg/dock/index.svg">http://www.carto.net/papers/svg/dock/index.svg</a>
+
+<p>This is an example of picture rollover effect made with scripted SVG.
+The website contains a lot of other interresting examples,
+particularily in <a href="http://www.carto.net/papers/svg/samples/#iact">Interactivity and SVG GUI</a>
+and <a href="http://www.carto.net/papers/svg/samples/#anim">Animation</a> categories.</p>
+
+</dl>
+
+
+<h1>Part 3B: Practical SVG</h1>
 
 
 
-TODO
+<h2>The idea</h2>
+
+Hans Rosling did a <a href="http://www.ted.com/talks/lang/eng/hans_rosling_on_global_population_growth.html">very interesting TED talk</a> about population growth with Ikea boxes and an animated graph.
+The animated graph was made with a Flash application from <a href="http://www.gapminder.org">http://www.gapminder.org</a>.
+Since data are freely available on the website, I just had the idea to build the same kind of animated graph with SVG, showing the variation in time of the two elements: GDP/capita and an happiness index for the 25 OECD countries.
+
+<h2>Data extraction and transformation</h2>
+
+I extracted the following data provided by GapMinder:
+<ul>
+  <li><a href="http://spreadsheets.google.com/pub?key=tL0jLxFBF9TbXIN_39b1qcQ&gid=0">Total population from 1950 to 2050 (projection).</a></li>
+  <li><a href="http://spreadsheets.google.com/pub?key=phAwcNAVuyj1jiMAkmq1iMg&gid=0">Income per person (GDP/capita, inflation-adjusted $)</a></li>
+</ul>
+
+<p>I also retrieved the HPI index from <a href="http://www.happyplanetindex.org/public-data/files/hpi-2-0-results.xls">http://www.happyplanetindex.org/public-data/files/hpi-2-0-results.xls</a>. 
+Given available data, I choosed to keep data between 1961 and 2005, with the ability to choose between the HPI or one of its components: Life Expectancy, Life Satisfaction, Ecological Footprint.</p>
+
+With regular expressions, I transformed original data into those 6 JSON files:
+<ul>
+  <li><a href="countries.json">countries.json</a></li>
+  <li><a href="ecologicalFootprint.json">ecologicalFootprint.json</a></li>
+  <li><a href="gdpPerCapita.json">gdpPerCapita.json</a></li>
+  <li><a href="happyPlanetIndex.json">happyPlanetIndex.json</a></li>
+  <li><a href="lifeExpectancy.json">lifeExpectancy.json</a></li>
+  <li><a href="lifeSatisfaction.json">lifeSatisfaction.json</a></li>
+  <li><a href="population.json">population.json</a></li>
+</ul>
+
+<p>The first JSON file is a one dimension array containing country labels.
+All the other JSON files have two dimensions: the year and the country.
+Since years are from 1961 to 2005, the actual year in the table is 1961 + &lt;table index&gt;.
+The second level tables contains the actual data for each country, in the same order as depicted in countries.json file.</p>
+
+<h2>Result</h2>
+
+
+<p>This SVG animation works only under Firefox 4 bêta and Opera 10.</p>
+
+<p><a href="happyGraph.svg">View in full window</a></p>
+
+
+<embed type="image/svg+xml" src="happyGraph.svg" width="640" height="480"/>
 
 
 </body>
