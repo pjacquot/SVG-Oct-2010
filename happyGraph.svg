@@ -197,12 +197,12 @@ loadJson('population.json', function(value) {
 
   var populationAmplitude = maxPopulation - minPopulation;
   var bubbleAmplitude = biggestBubble - smallestBubble;
-  var factor = bubbleAmplitude / populationAmplitude;
+  var factor = 250 * bubbleAmplitude / populationAmplitude;
 
   for (var i = 0; i < countryNodes.length; i++) {
     var values = "";
     for (var j = 0; j < population.length; j++) {
-      values += Math.ceil(population[j][i] * factor);
+      values += Math.ceil(Math.sqrt(population[j][i] * factor) / Math.PI);
       if (j != population.length - 1) values += ";";
     }
     countryNodes[i].children[0].children[0].setAttributeNS(null, "values", values);
